@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="box">
+  <h2>Enter this code on your phone</h2>
+  <p class="code">{{ code }}</p>
+  <ol>
+    <li>Open WhatsApp on your phone</li>
+    <li>Go to Settings &gt; Linked devices &gt; Link a device</li>
+    <li>Tap "Link with phone number instead" and type the code above</li>
+  </ol>
+  <p>This page moves on by itself once the phone is linked.</p>
+</div>
+<script>
+  setInterval(async () => {
+    const status = await (await fetch("/connection-status")).json();
+    if (status.connected) location.href = "/";
+  }, 3000);
+</script>
+{% endblock %}

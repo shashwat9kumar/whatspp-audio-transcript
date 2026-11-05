@@ -1,0 +1,22 @@
+# Runs WAHA, the self-hosted WhatsApp HTTP API, on http://localhost:3010
+# (3010 on the host because port 3000 is often taken by other dev servers)
+services:
+  waha:
+    # WAHA ships separate images per CPU: "gows-arm" for Apple Silicon, "gows" for Intel/AMD.
+    image: devlikeapro/waha:gows-arm
+    ports:
+      - "127.0.0.1:3010:3000"   # only reachable from this computer
+    env_file: .env              # WAHA reads WAHA_API_KEY from here
+    environment:
+      WHATSAPP_DEFAULT_ENGINE: GOWS
+      WAHA_API_DOWNLOAD_MEDIA: "true"
+      # Address WAHA puts in media links. Must match the host port above, not the container port.
+      WAHA_BASE_URL: ${WAHA_URL:-http://localhost:3010}
+      # How much chat history WhatsApp sends when this app is linked as a device.
+      # Only applies at link time: after changing it, use "Get older messages" in the app.
+      WAHA_GOWS_DEVICE_REQUIRE_FULL_SYNC: "true"
+      WAHA_GOWS_DEVICE_HISTORY_SYNC_FULL_SYNC_DAYS_LIMIT: ${HISTORY_SYNC_DAYS:-365}
+    volumes:
+      - ./waha_sessions:/app/.sessions   # keeps you logged in across restarts
+      - ./waha_media:/app/.media
+    restart: unless-stopped
