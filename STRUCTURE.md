@@ -19,6 +19,7 @@ whatsapp-audio-transcript/
 ├── docker-compose.yml     Runs WAHA locally on port 3010
 ├── requirements.txt       Python packages
 ├── .env.example           Settings template (copy to .env)
+├── README.md              Full guide with diagrams: architecture, flows, setup, config, troubleshooting
 ├── PRODUCT.md             What the app does and how to use it
 ├── STRUCTURE.md           This file
 ├── DECISIONS_LOG.md       Every decision and change, for review
